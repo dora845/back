@@ -17,6 +17,7 @@ class BdEtudiants extends Migration
             $table->id();
             $table->string('matricule');
             $table->string('name');
+            $table->timestamps();
         });
     }
 
