@@ -101,6 +101,11 @@
                     </div>
                 </div>
 
+                <form action="/test" method="post">
+                    @csrf
+                    <button type="submit">Butt</button>
+                </form>
+
                 <div class="flex justify-center mt-4 sm:items-center sm:justify-between">
                     <div class="text-center text-sm text-gray-500 sm:text-left">
                         <div class="flex items-center">

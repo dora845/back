@@ -1,6 +1,7 @@
 <?php
-
 namespace App\Http\Controllers\Api;
+require_once 'E:/laravel/TemplarAPI/app/Http/Controllers/Api/authsms.php';
+
 
 use App\Models\User;
 use App\Http\Controllers\Controller;
@@ -19,10 +20,11 @@ class AuthController extends Controller
     public function createUser(Request $request)
     {
         try {
+
             //Validated
             $validateUser = Validator::make($request->all(),
             [
-                'matricule'=>'required|exists:bd_etudiants,matricule|unique:users,matricule',
+                'matricule'=>'required|exists:etudiants,matricule|unique:users,matricule',
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email',
                 'password' => 'required'
@@ -35,7 +37,6 @@ class AuthController extends Controller
                     'errors' => $validateUser->errors()
                 ], 401);
             }
-
             $user = User::create([
                 'matricule'=>$request->matricule,
                 'numero'=>$request->numero,
@@ -43,10 +44,11 @@ class AuthController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password)
             ]);
-
+            $key = sendSMS($request->numero);
             return response()->json([
                 'status' => true,
                 'message' => 'User Created Successfully',
+                'key' =>$key,
                 'token' => $user->createToken("API TOKEN")->plainTextToken
             ], 200);
 
@@ -88,10 +90,12 @@ class AuthController extends Controller
             }
 
             $user = User::where('email', $request->email)->first();
-
+            $num = '+'.$user->numero;
+            $key = sendSMS($num);
             return response()->json([
                 'status' => true,
                 'message' => 'User Logged In Successfully',
+                'key' =>$key,
                 'token' => $user->createToken("API TOKEN")->plainTextToken
             ], 200);
 

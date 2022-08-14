@@ -13,10 +13,10 @@ class BdEtudiants extends Migration
      */
     public function up()
     {
-        Schema::create('bd_etudiants', function (Blueprint $table) {
+        Schema::create('etudiants', function (Blueprint $table) {
+            $table->id();
             $table->string('matricule');
             $table->string('name');
-            $table->primary('matricule');
         });
     }
 
@@ -27,6 +27,6 @@ class BdEtudiants extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bd_etudiants');
+        Schema::dropIfExists('etudiants');
     }
 }
